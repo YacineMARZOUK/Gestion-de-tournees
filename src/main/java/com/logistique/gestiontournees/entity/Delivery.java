@@ -37,4 +37,10 @@ public class Delivery {
 
     @Column(nullable = true) // Optionnel
     private String timeSlot;
+
+    @ManyToOne
+    @JoinColumn(name = "tour_id" )
+    private Tour tour;
+
+
 }
