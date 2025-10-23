@@ -18,4 +18,9 @@
         <property name="deliveryRepository" ref="deliveryRepository"/>
     </bean>
 
+    <bean id="TourService" class="com.logistique.gestiontournees.service.impl.TourServiceImpl">
+        <property name="tourRepository" ref="tourRepository"/>
+    </bean>
+
+
 </beans>
