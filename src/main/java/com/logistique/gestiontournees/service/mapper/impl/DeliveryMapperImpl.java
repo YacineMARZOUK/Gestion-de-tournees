@@ -8,61 +8,58 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-public class DeliveryMapperImpl implements DeliveryMapper, ApplicationContextAware {
+public class DeliveryMapperImpl implements DeliveryMapper {
 
-    private ApplicationContext applicationContext;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
 
 
     @Override
     public Delivery toEntity(DeliveryDTO dto){
-        Delivery entity = (Delivery)  applicationContext.getBean("deliveryEntity");
-        if(dto == null){
-            return entity;
-        }
-        entity.setId(dto.getId());
-        entity.setAddress(dto.getAddress());
-        entity.setLatitude(dto.getLatitude());
-        entity.setLongitude(dto.getLongitude());
-        entity.setWeight(dto.getWeight());
-        entity.setVolume(dto.getVolume());
-        entity.setStatus(dto.getStatus());
-        entity.setTimeSlot(dto.getTimeSlot());
 
-        // Gérer la relation
-        if (dto.getTourId() != null) {
-            Tour tour = (Tour) applicationContext.getBean("tourEntity");
-            tour.setId(dto.getTourId());
-            entity.setTour(tour);
+        if(dto == null){
+            return null;
         }
-        return entity;
+        Tour tour = null;
+        if(dto.getTourId() != null){
+            tour = Tour.builder().id(dto.getTourId()).build();
+        }
+        return Delivery.builder()
+                .id(dto.getId())
+                .address(dto.getAddress())
+                .latitude(dto.getLatitude())
+                .longitude(dto.getLongitude())
+                .weight(dto.getWeight())
+                .volume(dto.getVolume())
+                .status(dto.getStatus())
+                .timeSlot(dto.getTimeSlot())
+                .tour(tour)
+                .build();
+
     }
 
     @Override
     public DeliveryDTO toDto(Delivery entity) {
-        if (entity == null) {
-            return null;
-        }
-        DeliveryDTO dto = (DeliveryDTO) applicationContext.getBean("deliveryDTO");
-        dto.setId(entity.getId());
-        dto.setAddress(entity.getAddress());
-        dto.setLatitude(entity.getLatitude());
-        dto.setLongitude(entity.getLongitude());
-        dto.setWeight(entity.getWeight());
-        dto.setVolume(entity.getVolume());
-        dto.setStatus(entity.getStatus());
-        dto.setTimeSlot(entity.getTimeSlot());
+        if (entity == null) {return null;}
 
-        // Gérer la relation
-        if (entity.getTour() != null) {
-            dto.setTourId(entity.getTour().getId());
+        Long tourId = null;
+
+        if(entity.getTour() != null){
+            tourId = entity.getTour().getId();
         }
-        return dto;
-    }
+        return DeliveryDTO.builder()
+                .id(entity.getId())
+                .address(entity.getAddress())
+                .latitude(entity.getLatitude())
+                .longitude(entity.getLongitude())
+                .weight(entity.getWeight())
+                .volume(entity.getVolume())
+                .status(entity.getStatus())
+                .timeSlot(entity.getTimeSlot())
+                .tourId(tourId) // Assigner l'ID du tour
+                .build();
     }
 
-}
+    }
+
+
+
