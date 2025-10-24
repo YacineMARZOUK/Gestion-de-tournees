@@ -15,7 +15,7 @@ public class TourServiceImpl implements TourService {
     private final TourRepository tourRepository;
     private final TourMapper tourMapper;
 
-    public void setTourRepository(TourRepository tourRepository) {
+    public  TourServiceImpl(TourRepository tourRepository, TourMapper tourMapper) {
         this.tourRepository = tourRepository;
         this.tourMapper = tourMapper;
     }
