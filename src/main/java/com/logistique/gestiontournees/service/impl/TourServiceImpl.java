@@ -1,36 +1,40 @@
 package com.logistique.gestiontournees.service.impl;
 
+import com.logistique.gestiontournees.dto.TourDTO;
 import com.logistique.gestiontournees.entity.Tour;
 import com.logistique.gestiontournees.repository.TourRepository;
 import com.logistique.gestiontournees.service.TourService;
+import com.logistique.gestiontournees.service.mapper.TourMapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TourServiceImpl implements TourService {
 
-    // La dépendance
-    private TourRepository tourRepository;
+    private final TourRepository tourRepository;
+    private final TourMapper tourMapper;
 
-    // Le "setter" pour l'injection XML
     public void setTourRepository(TourRepository tourRepository) {
         this.tourRepository = tourRepository;
+        this.tourMapper = tourMapper;
     }
 
     @Override
-    public Tour save(Tour tour) {
-        // Logique métier avant sauvegarde (ex: vérifier dispo véhicule...)
-        return tourRepository.save(tour);
+    public TourDTO save(TourDTO tourDTO) {
+        Tour tour = tourMapper.toEntity(tourDTO);
+        tour = tourRepository.save(tour);
+       return tourMapper.toDto(tour);
     }
 
     @Override
-    public Optional<Tour> findById(Long id) {
-        return tourRepository.findById(id);
+    public Optional<TourDTO> findById(Long id) {
+        return tourRepository.findById(id).map(tourMapper::toDto);
     }
 
     @Override
-    public List<Tour> findAll() {
-        return tourRepository.findAll();
+    public List<TourDTO> findAll() {
+        return tourRepository.findAll().stream().map(tourMapper::toDto).collect(Collectors.toList());
     }
 
     @Override

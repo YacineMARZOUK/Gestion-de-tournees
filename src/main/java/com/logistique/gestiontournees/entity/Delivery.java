@@ -3,11 +3,13 @@ package com.logistique.gestiontournees.entity;
 import com.logistique.gestiontournees.entity.enumeration.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Builder
 @Table(name = "Delivery")
 @NoArgsConstructor
 @AllArgsConstructor
