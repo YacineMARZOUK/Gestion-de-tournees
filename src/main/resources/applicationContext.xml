@@ -9,18 +9,43 @@
 
     <jpa:repositories base-package="com.logistique.gestiontournees.repository" />
 
-    <bean id="vehicleService" class="com.logistique.gestiontournees.service.impl.VehicleServiceImpl">
+    <bean id="vehicleMapper"
+          class="com.logistique.gestiontournees.service.mapper.impl.VehicleMapperImpl" />
 
+    <bean id="deliveryMapper"
+          class="com.logistique.gestiontournees.service.mapper.impl.DeliveryMapperImpl" />
+
+    <bean id="tourMapper"
+          class="com.logistique.gestiontournees.service.mapper.impl.TourMapperImpl">
+
+        <property name="vehicleMapper" ref="vehicleMapper" />
+        <property name="deliveryMapper" ref="deliveryMapper" />
+    </bean>
+
+
+    <bean id="vehicleService" class="com.logistique.gestiontournees.service.impl.VehicleServiceImpl">
         <property name="vehicleRepository" ref="vehicleRepository" />
+        <property name="vehicleMapper" ref="vehicleMapper" />
     </bean>
 
     <bean id="deliveryService" class="com.logistique.gestiontournees.service.impl.DeliveryServiceImpl">
         <property name="deliveryRepository" ref="deliveryRepository"/>
+        <property name="deliveryMapper" ref="deliveryMapper"/>
     </bean>
 
-    <bean id="TourService" class="com.logistique.gestiontournees.service.impl.TourServiceImpl">
+    <bean id="tourService" class="com.logistique.gestiontournees.service.impl.TourServiceImpl">
         <property name="tourRepository" ref="tourRepository"/>
+        <property name="tourMapper" ref="tourMapper"/>
     </bean>
 
+    <bean id="vehicleEntity" class="com.logistique.gestiontournees.entity.Vehicle" scope="prototype" />
+    <bean id="deliveryEntity" class="com.logistique.gestiontournees.entity.Delivery" scope="prototype" />
+    <bean id="tourEntity" class="com.logistique.gestiontournees.entity.Tour" scope="prototype" />
+    <bean id="warehouseEntity" class="com.logistique.gestiontournees.entity.Warehouse" scope="prototype" />
+
+    <bean id="vehicleDto" class="com.logistique.gestiontournees.dto.VehicleDTO" scope="prototype" />
+    <bean id="deliveryDto" class="com.logistique.gestiontournees.dto.DeliveryDTO" scope="prototype" />
+    <bean id="tourDto" class="com.logistique.gestiontournees.dto.TourDTO" scope="prototype" />
+    <bean id="warehouseDto" class="com.logistique.gestiontournees.dto.WarehouseDTO" scope="prototype" />
 
 </beans>
