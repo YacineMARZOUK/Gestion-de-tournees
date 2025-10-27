@@ -144,5 +144,17 @@ public class ClarkeWrightOptimizer implements TourOptimizer {
 
     // Fonctions utilitaires privées pour la lisibilité
 
+    private double getDistance(Warehouse warehouse, Delivery delivery) {
+        return DistanceCalculator.calculateDistance(
+                warehouse.getLatitude(), warehouse.getLongitude(),
+                delivery.getLatitude(), delivery.getLongitude()
+        );
+    }
 
+    private double getDistance(Delivery deliveryA, Delivery deliveryB) {
+        return DistanceCalculator.calculateDistance(
+                deliveryA.getLatitude(), deliveryA.getLongitude(),
+                deliveryB.getLatitude(), deliveryB.getLongitude()
+        );
+    }
 }
