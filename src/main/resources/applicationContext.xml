@@ -11,8 +11,12 @@
 
     <bean id="vehicleMapper"
           class="com.logistique.gestiontournees.service.mapper.impl.VehicleMapperImpl" />
+
     <bean id="deliveryMapper"
           class="com.logistique.gestiontournees.service.mapper.impl.DeliveryMapperImpl" />
+
+    <bean id="nearestNeighborOptimizer"
+          class="com.logistique.gestiontournees.service.optimizer.impl.NearestNeighborOptimizer" />
 
     <bean id="tourMapper"
           class="com.logistique.gestiontournees.service.mapper.impl.TourMapperImpl">
