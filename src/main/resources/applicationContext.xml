@@ -60,5 +60,9 @@
           class="com.logistique.gestiontournees.controller.VehicleController">
         <constructor-arg ref="vehicleService"/>
     </bean>
+    <bean id="deliveryController"
+          class="com.logistique.gestiontournees.controller.DeliveryController">
+        <constructor-arg ref="deliveryService"/>
+    </bean>
 
 </beans>

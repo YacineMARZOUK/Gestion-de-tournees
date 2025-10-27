@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -36,6 +37,36 @@ public class DeliveryController {
         Optional<DeliveryDTO> dtoOpt = deliveryService.findById(id);
 
         return dtoOpt.map(dto ->ResponseEntity.ok(dto)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Operation(summary = "Récupère la liste de toutes les livraison ")
+    @GetMapping
+    public ResponseEntity<List<DeliveryDTO>> getAllDeliveries() {
+        List<DeliveryDTO> deliveries = deliveryService.findAll();
+        return ResponseEntity.ok(deliveries);
+    }
+
+    @Operation(summary = "Met à jour une livraison existante")
+    @PutMapping("/{id}")
+    public ResponseEntity<DeliveryDTO> updateDelivery(@PathVariable Long id, @RequestBody DeliveryDTO deliveryDTO) {
+        if (deliveryService.findById(id).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        deliveryDTO.setId(id);
+        DeliveryDTO updatedDto = deliveryService.save(deliveryDTO);
+        return ResponseEntity.ok(updatedDto);
+    }
+
+    @Operation(summary = "Supprime une livraison par son ID")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDelivery(@PathVariable Long id) {
+        if (deliveryService.findById(id).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        deliveryService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
