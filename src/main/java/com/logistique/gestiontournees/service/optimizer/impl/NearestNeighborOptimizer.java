@@ -44,11 +44,9 @@ public class NearestNeighborOptimizer implements TourOptimizer {
                     break;
                 }
             }
-            return orderedTour;
         }
+            return orderedTour;
 
 
     }
-
-
 }
