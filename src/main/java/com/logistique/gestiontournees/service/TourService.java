@@ -10,4 +10,8 @@ public interface TourService {
     List<TourDTO> findAll();
     Optional<TourDTO> findById(Long id);
     void deleteById(Long id);
+
+    TourDTO getOptimizedTour(Long tourId, String algorithmName  );
+
+    double getTotalDistance(long tourId);
 }
