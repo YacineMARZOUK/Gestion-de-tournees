@@ -17,6 +17,8 @@
 
     <bean id="nearestNeighborOptimizer"
           class="com.logistique.gestiontournees.service.optimizer.impl.NearestNeighborOptimizer" />
+    <bean id="clarkeWrightOptimizer"
+          class="com.logistique.gestiontournees.service.optimizer.impl.ClarkeWrightOptimizer" />
 
     <bean id="tourMapper"
           class="com.logistique.gestiontournees.service.mapper.impl.TourMapperImpl">
@@ -37,6 +39,11 @@
     <bean id="tourService" class="com.logistique.gestiontournees.service.impl.TourServiceImpl">
         <constructor-arg ref="tourRepository"/>
         <constructor-arg ref="tourMapper"/>
+    </bean>
+
+    <bean id="databaseTestRunner"
+          class="com.logistique.gestiontournees.runner.DatabaseTestRunner">
+        <constructor-arg ref="vehicleService" />
     </bean>
 
 </beans>
