@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,5 +41,37 @@ public class VehicleController {
         return dtoOpt
                 .map(dto -> ResponseEntity.ok(dto))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Operation(summary = "Récupère la liste de tous les véhicules")
+    @GetMapping
+    public ResponseEntity<List<VehicleDTO>> getAllVehicles() {
+        List<VehicleDTO> vehicles = vehicleService.findAll();
+        return ResponseEntity.ok(vehicles);
+    }
+
+    @Operation(summary = "Met à jour un véhicule existant")
+    @PutMapping("/{id}")
+    public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable Long id, @RequestBody VehicleDTO vehicleDTO) {
+
+        if (vehicleService.findById(id).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        vehicleDTO.setId(id);
+        VehicleDTO updatedDto = vehicleService.save(vehicleDTO);
+        return ResponseEntity.ok(updatedDto);
+    }
+
+    @Operation(summary = "Supprime un véhicule par son ID")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
+        if (vehicleService.findById(id).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        vehicleService.deleteById(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
