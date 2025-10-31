@@ -1,57 +1,40 @@
 package com.logistique.gestiontournees.runner;
 
-import com.logistique.gestiontournees.dto.VehicleDTO;
-import com.logistique.gestiontournees.entity.enumeration.VehicleType;
-import com.logistique.gestiontournees.service.VehicleService;
+import com.logistique.gestiontournees.entity.Warehouse; // Importez l'ENTITÉ
+import com.logistique.gestiontournees.repository.WarehouseRepository; // Importez le REPOSITORY
 import org.springframework.boot.CommandLineRunner;
-
-import java.util.List;
+import java.time.LocalTime;
 
 /**
- * Ce bean est exécuté par Spring Boot au démarrage.
- * Nous l'utilisons pour un test rapide de la base de données.
- * IL N'A PAS D'ANNOTATION (ex: @Component)
+ * Ce bean crée l'entrepôt de base (ID=1) au démarrage.
  */
 public class DatabaseTestRunner implements CommandLineRunner {
 
-    // Injecté par constructeur via le XML
-    private final VehicleService vehicleService;
+    // 1. Injecter le REPOSITORY directement
+    private final WarehouseRepository warehouseRepository;
 
-    public DatabaseTestRunner(VehicleService vehicleService) {
-        this.vehicleService = vehicleService;
+    // 2. Le constructeur n'a besoin que du repository
+    public DatabaseTestRunner(WarehouseRepository warehouseRepository) {
+        this.warehouseRepository = warehouseRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("\n\n--- [DÉBUT TEST BDD] ---");
+        System.out.println("\n\n--- [CRÉATION DE L'ENTREPÔT ID=1] ---");
 
-        try {
-            // 1. Créer un DTO de test
-            VehicleDTO testBike = VehicleDTO.builder()
-                    .licensePlate("TEST-BIKE-123")
-                    .vehicleType(VehicleType.BIKE)
-                    .maxWeight(50)
-                    .maxVolume(0.5)
-                    .build();
+        // 3. On utilise le Builder de l'ENTITÉ
+        Warehouse warehouse = Warehouse.builder()
+                .address("Entrepôt Central, Lyon")
+                .latitude(45.7500) // Coordonnées de Lyon
+                .longitude(4.8500)
+                .openingTime(LocalTime.of(6, 0))
+                .closingTime(LocalTime.of(22, 0))
+                .build();
 
-            System.out.println("[TEST] Tentative de sauvegarde de : " + testBike);
+        // 4. On sauvegarde l'ENTITÉ directement avec le repository
+        Warehouse savedWarehouse = warehouseRepository.save(warehouse);
 
-            // 2. Appeler le service pour sauvegarder
-            VehicleDTO savedBike = vehicleService.save(testBike);
-
-            System.out.println("[TEST] Véhicule sauvegardé avec succès ! ID attribué : " + savedBike.getId());
-
-            // 3. Appeler le service pour lire
-            List<VehicleDTO> allVehicles = vehicleService.findAll();
-            System.out.println("[TEST] Nombre total de véhicules en BDD : " + allVehicles.size());
-            System.out.println(allVehicles);
-
-            System.out.println("--- [TEST BDD RÉUSSI] --- \n\n");
-
-        } catch (Exception e) {
-            System.err.println("--- [ERREUR TEST BDD] ---");
-            e.printStackTrace();
-            System.err.println("--- [ERREUR TEST BDD] --- \n\n");
-        }
+        System.out.println("[DATA] Entrepôt créé avec ID: " + savedWarehouse.getId());
+        System.out.println("--- [PRÊT POUR LES TESTS POSTMAN] ---\n\n");
     }
 }

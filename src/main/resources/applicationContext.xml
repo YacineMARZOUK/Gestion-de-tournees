@@ -53,7 +53,7 @@
 
     <bean id="databaseTestRunner"
           class="com.logistique.gestiontournees.runner.DatabaseTestRunner">
-        <constructor-arg ref="vehicleService" />
+        <constructor-arg ref="warehouseRepository"/>
     </bean>
 
     <bean id="vehicleController"

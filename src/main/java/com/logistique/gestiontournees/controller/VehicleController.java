@@ -25,9 +25,9 @@ public class VehicleController {
     @PostMapping
     public ResponseEntity<VehicleDTO> createVehicle(@RequestBody VehicleDTO vehicleDTO) {
 
-        if(vehicleDTO.getId()==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+//        if(vehicleDTO.getId()==null){
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
         VehicleDTO savedDto = vehicleService.save(vehicleDTO);
         return new ResponseEntity<VehicleDTO>(savedDto, HttpStatus.CREATED);
     }
