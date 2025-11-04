@@ -1,19 +1,19 @@
 package com.logistique.gestiontournees.entity;
 
 import com.logistique.gestiontournees.entity.enumeration.DeliveryStatus;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import jakarta.persistence.*;
+
 @Entity
-@Builder
-@Table(name = "Delivery")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(exclude = "tour")
+@ToString(exclude = "tour")
 public class Delivery {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,22 +27,15 @@ public class Delivery {
     @Column(nullable = false)
     private double longitude;
 
-    @Column(nullable = false)
-    private double weight; // en kg
-
-    @Column(nullable = false)
-    private double volume; // en m³
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private DeliveryStatus status;
-
-    @Column(nullable = true) // Optionnel
+    private double weight;
+    private double volume;
     private String timeSlot;
 
-    @ManyToOne
-    @JoinColumn(name = "tour_id" )
-    private Tour tour;
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tour_id")
+    private Tour tour;
 
 }

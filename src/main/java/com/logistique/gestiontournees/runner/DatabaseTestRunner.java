@@ -20,21 +20,6 @@ public class DatabaseTestRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("\n\n--- [CRÉATION DE L'ENTREPÔT ID=1] ---");
 
-        // 3. On utilise le Builder de l'ENTITÉ
-        Warehouse warehouse = Warehouse.builder()
-                .address("Entrepôt Central, Lyon")
-                .latitude(45.7500) // Coordonnées de Lyon
-                .longitude(4.8500)
-                .openingTime(LocalTime.of(6, 0))
-                .closingTime(LocalTime.of(22, 0))
-                .build();
-
-        // 4. On sauvegarde l'ENTITÉ directement avec le repository
-        Warehouse savedWarehouse = warehouseRepository.save(warehouse);
-
-        System.out.println("[DATA] Entrepôt créé avec ID: " + savedWarehouse.getId());
-        System.out.println("--- [PRÊT POUR LES TESTS POSTMAN] ---\n\n");
     }
 }

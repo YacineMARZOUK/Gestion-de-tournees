@@ -21,5 +21,4 @@ public class DeliveryDTO {
     private DeliveryStatus status;
     private String timeSlot;
     private Long tourId;
-
 }

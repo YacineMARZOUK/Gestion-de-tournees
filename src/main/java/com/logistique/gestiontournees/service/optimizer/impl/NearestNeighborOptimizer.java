@@ -12,41 +12,53 @@ import java.util.List;
 public class NearestNeighborOptimizer implements TourOptimizer {
 
     @Override
-    public List<Delivery> calculateOptimalTour(Warehouse warehouse, List<Delivery> deliveries, Vehicle vehicle){
+    public List<Delivery> calculateOptimalTour(Warehouse warehouse, List<Delivery> deliveries, Vehicle vehicle) {
 
-        //la copie de loriginal
+        // Copie modifiable de la liste des livraisons
         List<Delivery> remainingDeliveries = new ArrayList<>(deliveries);
         List<Delivery> orderedTour = new ArrayList<>();
 
-        //le point de depart
-        double currentlat = warehouse.getLatitude();
+        // Le point de départ est l'entrepôt
+        double currentLat = warehouse.getLatitude();
         double currentLon = warehouse.getLongitude();
 
-        while(!remainingDeliveries.isEmpty()){
-            Delivery closesDelivery = null;
+        while (!remainingDeliveries.isEmpty()) {
+            Delivery closestDelivery = null; // Renommé pour plus de clarté
             double shortestDistance = Double.MAX_VALUE;
 
-            for(Delivery delivery : remainingDeliveries){
-                double distance = DistanceCalculator.calculateDistance(currentlat, currentLon,
+            // --- ÉTAPE 1 : TROUVER le plus proche ---
+            // Itérer sur TOUTES les livraisons restantes
+            for (Delivery delivery : remainingDeliveries) {
+                double distance = DistanceCalculator.calculateDistance(currentLat, currentLon,
                         delivery.getLatitude(), delivery.getLongitude());
 
-                if(distance < shortestDistance){
+                if (distance < shortestDistance) {
                     shortestDistance = distance;
-                    closesDelivery = delivery;
+                    closestDelivery = delivery;
                 }
-                if (closesDelivery != null){
-                    orderedTour.add(closesDelivery);
-                    remainingDeliveries.remove(closesDelivery);
+            } // <-- FIN DE LA BOUCLE 'FOR'
 
-                    currentlat = closesDelivery.getLatitude();
-                    currentLon = closesDelivery.getLongitude();
-                }else{
-                    break;
-                }
+            // --- ÉTAPE 2 : TRAITER le plus proche (après la fin de la boucle) ---
+            // Votre erreur était que le bloc "if (closesDelivery != null)"
+            // était À L'INTÉRIEUR de la boucle "for"
+
+            if (closestDelivery != null) {
+                // 2a. L'ajouter à la tournée optimisée
+                orderedTour.add(closestDelivery);
+
+                // 2b. Le retirer des livraisons restantes
+                remainingDeliveries.remove(closestDelivery);
+
+                // 2c. Mettre à jour la position actuelle pour la PROCHAINE itération
+                currentLat = closestDelivery.getLatitude();
+                currentLon = closestDelivery.getLongitude();
+
+            } else {
+                // Sécurité : si on ne trouve rien, on arrête pour éviter une boucle infinie
+                break;
             }
-        }
-            return orderedTour;
+        } // <-- FIN DE LA BOUCLE 'WHILE'
 
-
+        return orderedTour;
     }
 }

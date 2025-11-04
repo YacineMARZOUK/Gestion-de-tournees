@@ -1,6 +1,7 @@
 package com.logistique.gestiontournees.service;
 
 import com.logistique.gestiontournees.dto.DeliveryDTO;
+import com.logistique.gestiontournees.dto.DeliveryDistanceDTO;
 import com.logistique.gestiontournees.entity.Delivery;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface DeliveryService {
     Optional<DeliveryDTO> findById(Long id);
     List<DeliveryDTO> findAll();
     void deleteById(Long id);
+    List<DeliveryDistanceDTO> getDistancesFromDelivery(Long sourceDeliveryId);
 }

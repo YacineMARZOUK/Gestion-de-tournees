@@ -17,6 +17,5 @@ public class TourDTO {
     private Long id;
     private LocalDate tourDate;
     private Long vehicleId;
-    private VehicleDTO vehicle;
     private List<DeliveryDTO> deliveries;
 }

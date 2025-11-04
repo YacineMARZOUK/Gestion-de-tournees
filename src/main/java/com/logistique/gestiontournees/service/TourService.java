@@ -6,12 +6,22 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TourService {
+
     TourDTO save(TourDTO tourDTO);
-    List<TourDTO> findAll();
+
     Optional<TourDTO> findById(Long id);
+
+    List<TourDTO> findAll();
+
     void deleteById(Long id);
 
-    TourDTO getOptimizedTour(Long tourId, String algorithmName  );
+    /**
+     * Calcule et SAUVEGARDE un nouvel ordre de livraison optimisé.
+     */
+    TourDTO getOptimizedTour(Long tourId, String algorithmName);
 
+    /**
+     * Calcule la distance totale d'une tournée (basée sur l'ordre sauvegardé).
+     */
     double getTotalDistance(long tourId);
 }

@@ -48,7 +48,6 @@ public class TourMapperImpl implements TourMapper {
                 .id(entity.getId())
                 .tourDate(entity.getTourDate())
                 .vehicleId((entity.getVehicle() != null) ? entity.getVehicle().getId() : null)
-                .vehicle((entity.getVehicle() != null) ? vehicleMapper.toDto(entity.getVehicle()) : null)
                 .deliveries((entity.getDeliveries() != null) ?
                         entity.getDeliveries().stream()
                                 .map(deliveryMapper::toDto)

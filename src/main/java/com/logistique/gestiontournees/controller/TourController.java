@@ -75,27 +75,22 @@ public class TourController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "Lance l'optimisation d'une tournée avec un algorithme donné")
-    @PostMapping("/{id}/optimize") //
-    public ResponseEntity<TourDTO> optimizeTour(
-            @PathVariable("id") Long id,
-            @RequestParam("algoName") String algorithmName) {
+    @Operation(summary = "Lance l'optimisation et retourne la distance totale")
+    @PostMapping("/{id}/optimize")
+    public ResponseEntity<Double> optimizeTour(
+                                                @PathVariable("id") Long id,
+                                                @RequestParam("algoName") String algorithmName) {
 
         if (tourService.findById(id).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        tourService.getOptimizedTour(id, algorithmName);
+        double totalDistance = tourService.getTotalDistance(id);
+        return ResponseEntity.ok(totalDistance);
+    }
 
-        try {
-
-            TourDTO optimizedTour = tourService.getOptimizedTour(id, algorithmName);
-            return ResponseEntity.ok(optimizedTour);
-
-        } catch (IllegalArgumentException e) {
-
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (RuntimeException e) {
-
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @GetMapping("/{id}/distance")
+    public ResponseEntity<Double> getTotalDistance(@PathVariable("id") long tourId){
+        return ResponseEntity.ok(tourService.getTotalDistance(tourId));
     }
 }
