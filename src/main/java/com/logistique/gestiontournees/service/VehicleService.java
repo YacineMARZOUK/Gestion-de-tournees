@@ -1,6 +1,7 @@
 package com.logistique.gestiontournees.service;
 
 import com.logistique.gestiontournees.dto.VehicleDTO;
+import com.logistique.gestiontournees.entity.enumeration.VehicleType;
 
 
 import java.util.List;
@@ -11,5 +12,6 @@ public interface VehicleService {
     Optional<VehicleDTO>findById(Long id);
     List<VehicleDTO> findAll();
     void deleteById(Long id);
+    List<VehicleDTO> findVehicleByTypeOrderByMaxWeightDesc(VehicleType Type);
 
 }

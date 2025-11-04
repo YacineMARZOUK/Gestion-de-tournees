@@ -3,6 +3,7 @@ package com.logistique.gestiontournees.controller;
 
 import com.logistique.gestiontournees.dto.VehicleDTO;
 import com.logistique.gestiontournees.entity.Vehicle;
+import com.logistique.gestiontournees.entity.enumeration.VehicleType;
 import com.logistique.gestiontournees.service.VehicleService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
@@ -73,5 +74,14 @@ public class VehicleController {
         vehicleService.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/byType")
+    public ResponseEntity<List<VehicleDTO>> getVehiclesByType(@RequestParam("type") VehicleType type) {
+        if(type == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+       List<VehicleDTO> vehicleDTOS = vehicleService.findVehicleByTypeOrderByMaxWeightDesc(type);
+        return ResponseEntity.ok(vehicleDTOS);
     }
 }

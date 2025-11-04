@@ -2,6 +2,7 @@ package com.logistique.gestiontournees.service.impl;
 
 import com.logistique.gestiontournees.dto.VehicleDTO;
 import com.logistique.gestiontournees.entity.Vehicle;
+import com.logistique.gestiontournees.entity.enumeration.VehicleType;
 import com.logistique.gestiontournees.repository.VehicleRepository;
 import com.logistique.gestiontournees.service.VehicleService;
 import com.logistique.gestiontournees.service.mapper.VehicleMapper;
@@ -43,5 +44,14 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public void deleteById(Long id) {
         vehicleRepository.deleteById(id);
+    }
+
+    @Override
+     public List<VehicleDTO> findVehicleByTypeOrderByMaxWeightDesc(VehicleType type){
+        List<Vehicle> vehicleDESC = vehicleRepository.findVehicleByTypeOrderByMaxWeightDesc(type);
+
+        return vehicleDESC.stream()
+                .map(vehicle -> vehicleMapper.toDto(vehicle))
+                .collect(Collectors.toList());
     }
 }
